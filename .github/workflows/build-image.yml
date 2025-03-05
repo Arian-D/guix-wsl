@@ -1,0 +1,28 @@
+name: Build Guix WSL2 image
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: PromyLOPh/guix-install-action@v1
+        with:
+          path: ~/.cache/guix
+          # use a key that (almost) never matches
+          key: guix-cache-${{ github.sha }}
+          restore-keys: |
+            guix-cache-
+
+      - name: Build
+        id: image-builder
+        run: echo "IMAGE_PATH=$(guix system image --image-type=wsl2 system.scm)" >> $GITHUB_OUTPUT
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.image-builder.outputs.IMAGE_PATH }}
