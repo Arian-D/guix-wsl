@@ -10,6 +10,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Guix cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/guix
+          # use a key that (almost) never matches
+          key: guix-cache-${{ github.sha }}
+          restore-keys: |
+            guix-cache-
+
       - uses: PromyLOPh/guix-install-action@v1
         with:
           path: ~/.cache/guix
@@ -18,7 +27,10 @@ jobs:
           restore-keys: |
             guix-cache-
 
-      - name: Build
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build the image
         id: image-builder
         run: echo "IMAGE_PATH=$(guix system image --image-type=wsl2 system.scm)" >> $GITHUB_OUTPUT
 
