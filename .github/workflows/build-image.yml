@@ -38,3 +38,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.image-builder.outputs.IMAGE_PATH }}
+          tag_name: hmmm
