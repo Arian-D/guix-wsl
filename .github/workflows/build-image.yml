@@ -34,7 +34,7 @@ jobs:
 
       - name: Build the image
         id: image-builder
-        run: echo "IMAGE_PATH=$(guix system image --image-type=wsl2 system.scm)" >> $GITHUB_OUTPUT
+        run: echo "IMAGE_PATH=$(guix system image --image-type=wsl2 --expression='(@ (gnu system images wsl2) wsl-os))" >> $GITHUB_OUTPUT
 
       - name: Release
         uses: softprops/action-gh-release@v2
