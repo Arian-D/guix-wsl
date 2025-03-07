@@ -1,0 +1,12 @@
+#+title: Guix WSL Image
+
+Guix provides the facilities to build system images for WSL2, and
+provids a sample system object called =wsl-os=, but unfortunately, there
+are no pre-built images.
+
+This repo provides that sample images in the release. If you have a
+Linux machine that already has Guix, you're better off building
+yourself:
+#+begin_src shell
+guix system image -t wsl2 -e '(@ (gnu system images wsl2) wsl-os)'
+#+end_src
