@@ -33,11 +33,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build the image
-        id: image-builder
-        run: echo "IMAGE_PATH=$(guix system image --image-type=wsl2 --expression='(@ (gnu system images wsl2) wsl-os)')" >> $GITHUB_OUTPUT
+        run: cp "$(guix system image --image-type=wsl2 image.scm)" guix-wsl.tar.gz
 
       - name: Release
+        if: github.event_name == 'push'
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ steps.image-builder.outputs.IMAGE_PATH }}
+          files: guix-wsl.tar.gz
           tag_name: hmmm
